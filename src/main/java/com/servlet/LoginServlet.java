@@ -14,20 +14,24 @@ import java.io.PrintWriter;
         description = "Login Servlet Testing",
         urlPatterns = {"/LoginServlet"},
         initParams = {
+                @WebInitParam(name = "name", value = "^[A-Z]{1}+[a-z]{2,}$"),
                 @WebInitParam(name = "user", value = "Akshay"),
-                @WebInitParam(name = "password", value = "Bridgelabz")
+                @WebInitParam(name = "password", value = "0000")
         }
 )
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // GET USER AND PASSWORD
-        String user = request.getParameter("user");
+        String nameOfUser = request.getParameter("nameOfUser");
+        String userLogin = request.getParameter("userLogin");
         String pwd = request.getParameter("pwd");
+
         // GET SERVLET CONFIG
+        String name = getServletConfig().getInitParameter("name");
         String userID = getServletConfig().getInitParameter("user");
         String password = getServletConfig().getInitParameter("password");
-        if (userID.equals(user) && password.equals(pwd)) {
+        if (nameOfUser.matches(name) && userID.equals(userLogin) && password.equals(pwd)) {
             request.setAttribute("user", userID);
             request.getRequestDispatcher("LoginSuccess.jsp").forward(request, response);
         } else {
