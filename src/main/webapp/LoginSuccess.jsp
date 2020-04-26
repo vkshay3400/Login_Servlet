@@ -12,7 +12,7 @@
     <title>Login Success Page</title>
 </head>
 <body>
-<h1>Hi <%= request.getAttribute("user")%> , Login Successful.</h1>
+<h1>Hi <%= request.getAttribute("userID")%> , Login Successful.</h1>
 <a href="Login.html">Login Page</a>
 </body>
 </html>

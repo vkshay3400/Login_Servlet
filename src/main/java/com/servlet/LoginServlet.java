@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.regex.Pattern;
 
 @WebServlet(
         description = "Login Servlet Testing",
@@ -16,7 +17,7 @@ import java.io.PrintWriter;
         initParams = {
                 @WebInitParam(name = "name", value = "^[A-Z]{1}+[a-z]{2,}$"),
                 @WebInitParam(name = "user", value = "Akshay"),
-                @WebInitParam(name = "password", value = "0000")
+                @WebInitParam(name = "password", value = "^(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[~!@#$%^&*()_+?<>/{}])(?=.*?[a-z]).{8,}$")
         }
 )
 public class LoginServlet extends HttpServlet {
@@ -31,8 +32,9 @@ public class LoginServlet extends HttpServlet {
         String name = getServletConfig().getInitParameter("name");
         String userID = getServletConfig().getInitParameter("user");
         String password = getServletConfig().getInitParameter("password");
-        if (nameOfUser.matches(name) && userID.equals(userLogin) && password.equals(pwd)) {
-            request.setAttribute("user", userID);
+
+        if (userLogin.equals(userID) && Pattern.matches(password, pwd) && Pattern.matches(name, nameOfUser)) {
+            request.setAttribute("userID", userLogin);
             request.getRequestDispatcher("LoginSuccess.jsp").forward(request, response);
         } else {
             RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.html");
